@@ -18,3 +18,71 @@ Content-Type: application/json
     "email" : "test@devflow.com",
     "password" : "password123"
 }
+
+# Access Token (Login) - eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxNzE5ODkxLCJleHAiOjE3ODE3MjA3OTF9.1YIVX19HERrU_NZwTEdpKrs14Oo7hA90olAhg701y8Xa3LR0_g0hEQotK6biATXe
+
+### Test protected route (no token - should return 401) 
+
+GET http://localhost:8080/api/v1/test
+
+
+### Create a project 
+
+POST http://localhost:8080/api/v1/projects
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxNzIyMjc3LCJleHAiOjE3ODE3MjMxNzd9.VfptyuDhuK2I8rmQflfLNcRFnQyg_IC6hoXC2Dd5TstXfSaEQrQ3Elij90fLWoHd
+
+# HTTP/1.1 201 
+# X-Content-Type-Options: nosniff
+# X-XSS-Protection: 0
+# Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+# Pragma: no-cache
+# Expires: 0
+# X-Frame-Options: DENY
+# Content-Type: application/json
+# Transfer-Encoding: chunked
+# Date: Wed, 17 Jun 2026 18:52:11 GMT
+# Connection: close
+
+# {
+#   "id": 1,
+#   "name": "Devflow Backend",
+#   "description": "Main backend project for DevFlow app",
+#   "isPublic": false,
+#   "ownerName": "Test User",
+#   "ownerEmail": "test@devflow.com",
+#   "createdAt": "2026-06-17T18:52:11.412226200Z"
+# }
+
+{
+    "name" : "Devflow Backend",
+    "description" : "Main backend project for DevFlow app",
+    "isPublic" : false
+}
+
+### Get my projects
+
+GET http://localhost:8080/api/v1/projects
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxNzIyMjc3LCJleHAiOjE3ODE3MjMxNzd9.VfptyuDhuK2I8rmQflfLNcRFnQyg_IC6hoXC2Dd5TstXfSaEQrQ3Elij90fLWoHd
+
+### Get single project (use id from create response) 
+GET http://localhost:8080/api/v1/projects/1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxNzIyMjc3LCJleHAiOjE3ODE3MjMxNzd9.VfptyuDhuK2I8rmQflfLNcRFnQyg_IC6hoXC2Dd5TstXfSaEQrQ3Elij90fLWoHd
+
+### Update Project
+
+PUT http://localhost:8080/api/v1/projects/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxNzIyMjc3LCJleHAiOjE3ODE3MjMxNzd9.VfptyuDhuK2I8rmQflfLNcRFnQyg_IC6hoXC2Dd5TstXfSaEQrQ3Elij90fLWoHd
+
+{
+    "name" : "DevFlow Backend v2",
+    "description" : "Updated description"
+}
+
+### Delete project
+
+DELETE http://localhost:8080/api/v1/projects/1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxNzIyMjc3LCJleHAiOjE3ODE3MjMxNzd9.VfptyuDhuK2I8rmQflfLNcRFnQyg_IC6hoXC2Dd5TstXfSaEQrQ3Elij90fLWoHd
+
+
