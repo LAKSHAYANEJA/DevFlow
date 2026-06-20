@@ -1,0 +1,153 @@
+package com.devflow.service;
+
+import com.devflow.dto.TaskRequest;
+import com.devflow.dto.TaskResponse;
+import com.devflow.entity.Project;
+import com.devflow.entity.Task;
+import com.devflow.entity.User;
+import com.devflow.repository.ProjectMemberRepository;
+import com.devflow.repository.ProjectRepository;
+import com.devflow.repository.TaskRepository;
+import com.devflow.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import com.devflow.enums.TaskPriority;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class TaskService {
+    private final TaskRepository taskRepository;
+    private final ProjectRepository projectRepository;
+    private final ProjectMemberRepository projectMemberRepository;
+    private final UserRepository userRepository;
+
+    private User getCurrentUser() {
+        String email = SecurityContextHolder.getContext().
+        getAuthentication().getName();
+
+        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    private void verifyProjectAccess(Long projectId, User user) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project not found"));
+        
+        boolean hasAccess = project.getOwner().getId().equals(user.getId()) || projectMemberRepository.existsByProjectIdAndUserId(projectId, user.getId());
+        
+        if(!hasAccess) {
+            throw new RuntimeException("Access denied to this project");
+        }
+    }
+
+    // ----- CREATE TASK -----
+
+    @Transactional
+    public TaskResponse.Summary createTask(Long projectId, TaskRequest.Create request) {
+        User user = getCurrentUser();
+        verifyProjectAccess(projectId, user);
+
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project not found"));
+
+        User assignee = null;
+
+        if(request.assigneeId() != null) {
+            assignee = userRepository.findById(request.assigneeId())
+            .orElseThrow(() -> new RuntimeException("Assignee not found"));
+        }
+
+        Task task = Task.builder().project(project)
+        .title(request.title()).description(request.description())
+        .priority(request.priority() != null ? request.priority() : TaskPriority.MEDIUM).assignee(assignee).dueDate(request.dueDate()).build();
+    
+        return toSummary(taskRepository.save(task));
+    }
+
+    // ----- LIST TASK FOR PROJECT -----
+
+    public List<TaskResponse.Summary> getTasksForProject(long projectId) {
+        User user = getCurrentUser();
+        verifyProjectAccess(projectId, user);
+
+        return taskRepository.findByProjectIdOrderByCreatedAtDesc(projectId).stream().map(this::toSummary).toList();
+    }
+
+    // ----- GET SINGLE TASK -----
+
+    public TaskResponse.Summary getTask(Long taskId) {
+        User user = getCurrentUser();
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+
+        verifyProjectAccess(task.getProject().getId(), user);
+        return toSummary(task);
+    }
+
+    // ----- UPDATE TASK -----
+
+    public TaskResponse.Summary updateTask(Long taskId, TaskRequest.Update request) {
+        User user = getCurrentUser();
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+
+        verifyProjectAccess(task.getProject().getId(), user);
+
+        if(request.title() != null) task.setTitle(request.title());
+        if(request.description() != null) task.setDescription(request.description());
+        if(request.priority() != null) task.setPriority(request.priority());
+        if(request.dueDate() != null) task.setDueDate(request.dueDate());
+        if(request.prUrl() != null) task.setPrUrl(request.prUrl());
+
+        if(request.assigneeId() != null) {
+            User assignee = userRepository.findById(request.assigneeId()).orElseThrow(() -> new RuntimeException("Assignee not found"));
+            task.setAssignee(assignee);
+        }
+
+        return toSummary(taskRepository.save(task));
+    }
+
+    // ----- UPDATE STATUS -----
+    @Transactional
+    public TaskResponse.Summary updateStatus(Long taskId, TaskRequest.StatusUpdate request) {
+        User user = getCurrentUser();
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+
+        verifyProjectAccess(task.getProject().getId(), user);
+
+        task.setStatus(request.status());
+
+        return toSummary(taskRepository.save(task));
+    }
+
+    // ----- SOFT DELETE -----
+
+    @Transactional
+    public void deleteTask(Long taskId) {
+        User user = getCurrentUser();
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+
+        verifyProjectAccess(task.getProject().getId(), user);
+
+        task.softDelete();
+        taskRepository.save(task);
+    }
+
+    // ----- MAPPER -----
+
+    private TaskResponse.Summary toSummary(Task t) {
+        return new TaskResponse.Summary(
+            t.getId(),
+            t.getProject().getId(),
+            t.getTitle(),
+            t.getDescription(),
+            t.getStatus(),
+            t.getPriority(),
+            t.getAssignee() != null ? t.getAssignee().getName() : null,
+            t.getAssignee() != null ? t.getAssignee().getId() : null,
+            t.getDueDate(),
+            t.getPrUrl(),
+            t.getCreatedAt(),
+            t.getUpdatedAt()
+        );
+    }
+}

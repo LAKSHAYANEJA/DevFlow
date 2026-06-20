@@ -30,7 +30,7 @@ GET http://localhost:8080/api/v1/test
 
 POST http://localhost:8080/api/v1/projects
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxNzIyMjc3LCJleHAiOjE3ODE3MjMxNzd9.VfptyuDhuK2I8rmQflfLNcRFnQyg_IC6hoXC2Dd5TstXfSaEQrQ3Elij90fLWoHd
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxOTM4NjE0LCJleHAiOjE3ODE5Mzk1MTR9.B_Xq9WUf1jQfQdwxA0ARogQsa8VPXbHae7w-7ocSI5BsCeiVhPPbj2FF6lgvCARW
 
 # HTTP/1.1 201 
 # X-Content-Type-Options: nosniff
@@ -62,27 +62,71 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwia
 
 ### Get my projects
 
-GET http://localhost:8080/api/v1/projects
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxNzIyMjc3LCJleHAiOjE3ODE3MjMxNzd9.VfptyuDhuK2I8rmQflfLNcRFnQyg_IC6hoXC2Dd5TstXfSaEQrQ3Elij90fLWoHd
+# GET http://localhost:8080/api/v1/projects
+# Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxNzIyMjc3LCJleHAiOjE3ODE3MjMxNzd9.VfptyuDhuK2I8rmQflfLNcRFnQyg_IC6hoXC2Dd5TstXfSaEQrQ3Elij90fLWoHd
 
 ### Get single project (use id from create response) 
-GET http://localhost:8080/api/v1/projects/1
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxNzIyMjc3LCJleHAiOjE3ODE3MjMxNzd9.VfptyuDhuK2I8rmQflfLNcRFnQyg_IC6hoXC2Dd5TstXfSaEQrQ3Elij90fLWoHd
+# GET http://localhost:8080/api/v1/projects/1
+# Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxNzIyMjc3LCJleHAiOjE3ODE3MjMxNzd9.VfptyuDhuK2I8rmQflfLNcRFnQyg_IC6hoXC2Dd5TstXfSaEQrQ3Elij90fLWoHd
 
 ### Update Project
 
-PUT http://localhost:8080/api/v1/projects/1
+# PUT http://localhost:8080/api/v1/projects/1
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxNzIyMjc3LCJleHAiOjE3ODE3MjMxNzd9.VfptyuDhuK2I8rmQflfLNcRFnQyg_IC6hoXC2Dd5TstXfSaEQrQ3Elij90fLWoHd
+
+# {
+#     "name" : "DevFlow Backend v2",
+#     "description" : "Updated description"
+# }
+
+# ### Delete project
+
+# DELETE http://localhost:8080/api/v1/projects/1
+# Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxNzIyMjc3LCJleHAiOjE3ODE3MjMxNzd9.VfptyuDhuK2I8rmQflfLNcRFnQyg_IC6hoXC2Dd5TstXfSaEQrQ3Elij90fLWoHd
+
+
+
+### Create task
+POST http://localhost:8080/api/v1/projects/2/tasks
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxNzIyMjc3LCJleHAiOjE3ODE3MjMxNzd9.VfptyuDhuK2I8rmQflfLNcRFnQyg_IC6hoXC2Dd5TstXfSaEQrQ3Elij90fLWoHd
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxOTM4NjE0LCJleHAiOjE3ODE5Mzk1MTR9.B_Xq9WUf1jQfQdwxA0ARogQsa8VPXbHae7w-7ocSI5BsCeiVhPPbj2FF6lgvCARW
 
 {
-    "name" : "DevFlow Backend v2",
-    "description" : "Updated description"
+    "title" : "Set up CI/CD pipeline",
+    "description" : "Configure GitHub Actions for automated testing",
+    "priority" : "HIGH",
+    "dueDate" : "2026-07-01"
 }
 
-### Delete project
 
-DELETE http://localhost:8080/api/v1/projects/1
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxNzIyMjc3LCJleHAiOjE3ODE3MjMxNzd9.VfptyuDhuK2I8rmQflfLNcRFnQyg_IC6hoXC2Dd5TstXfSaEQrQ3Elij90fLWoHd
+### Get tasks for project
+GET http://localhost:8080/api/v1/projects/2/tasks
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxOTM5NjY0LCJleHAiOjE3ODE5NDA1NjR9.xB10Xv9loq0RsjgnfE_Qv2j7qJq-T52zpcEWtjQOoJaYy6m95P2yqzQBOwFzHM6w
 
+### Get single task
+GET http://localhost:8080/api/v1/tasks/1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxOTM5NjY0LCJleHAiOjE3ODE5NDA1NjR9.xB10Xv9loq0RsjgnfE_Qv2j7qJq-T52zpcEWtjQOoJaYy6m95P2yqzQBOwFzHM6w
 
+### Update task
+PATCH http://localhost:8080/api/v1/tasks/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxOTM5NjY0LCJleHAiOjE3ODE5NDA1NjR9.xB10Xv9loq0RsjgnfE_Qv2j7qJq-T52zpcEWtjQOoJaYy6m95P2yqzQBOwFzHM6w
+
+{
+    "title" : "Set up CI/CD pipeline - UPDATED"
+}
+
+### Update status 
+PATCH http://localhost:8080/api/v1/tasks/1/status
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxOTQwMzEyLCJleHAiOjE3ODE5NDEyMTJ9.Hx2UnRIG52SkRLFPBWVKDri7xsZOKUQL61bAinQwuKVLexh8LzVL6SDYVow2V9el
+
+{
+    "status" : "IN_PROGRESS"
+}
+
+### Delete task (soft delete)
+
+DELETE http://localhost:8080/api/v1/tasks/1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxOTQwMzEyLCJleHAiOjE3ODE5NDEyMTJ9.Hx2UnRIG52SkRLFPBWVKDri7xsZOKUQL61bAinQwuKVLexh8LzVL6SDYVow2V9el
