@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 // import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.devflow.dto.ProjectResponse;
+import com.devflow.dto.TaskResponse;
+
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +42,19 @@ public class RedisConfig {
 
         // GenericJacksonJsonRedisSerializer serializer = new GenericJacksonJsonRedisSerializer(mapper);
 
+
+        // TASKS
+
+        Jackson2JsonRedisSerializer<List<TaskResponse.Summary>> taskListSerializer = new Jackson2JsonRedisSerializer<>(mapper, mapper.getTypeFactory().constructCollectionType(List.class, TaskResponse.Summary.class));
+
+        RedisCacheConfiguration taskListConfig = RedisCacheConfiguration.defaultCacheConfig().
+        entryTtl(Duration.ofMinutes(5)).
+        serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer())).
+        serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(taskListSerializer)).disableCachingNullValues();
+
+        // PROJECTS
+
+
         Jackson2JsonRedisSerializer<List<ProjectResponse.Summary>> listSerializer = new Jackson2JsonRedisSerializer<>(
             mapper, mapper.getTypeFactory().constructCollectionType(List.class, ProjectResponse.Summary.class)    
         );
@@ -54,6 +69,6 @@ public class RedisConfig {
         RedisCacheConfiguration defaultConfig = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(5)).
         serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer())).disableCachingNullValues();
 
-        return RedisCacheManager.builder(connectionFactory).cacheDefaults(defaultConfig).withInitialCacheConfigurations(Map.of("projects", listConfig)).build();
+        return RedisCacheManager.builder(connectionFactory).cacheDefaults(defaultConfig).withInitialCacheConfigurations(Map.of("projects", listConfig, "tasks", taskListConfig)).build();
     }
 }

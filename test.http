@@ -154,5 +154,5 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwia
 
 
 ### Get projects (should show new project + hit DB again) 
-GET http://localhost:8080/api/v1/projects
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyMzc5NjAzLCJleHAiOjE3ODIzODA1MDN9.JyuF3StzV-lw23Rrm0rfwTk_Xh_8rkEJ8VzS037AYecLnxql-u0TmhoGo-RISTKA
+GET http://localhost:8080/api/v1/projects/2/tasks
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyMzgwNjMyLCJleHAiOjE3ODIzODE1MzJ9.R3eONqaHqh74KJ1KIE7hw4EuR39G4fTNsUH_uahsVEVXN1v4wZ5isugqrjPLU1Bv

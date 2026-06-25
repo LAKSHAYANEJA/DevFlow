@@ -10,6 +10,9 @@ import com.devflow.repository.ProjectRepository;
 import com.devflow.repository.TaskRepository;
 import com.devflow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +48,7 @@ public class TaskService {
     // ----- CREATE TASK -----
 
     @Transactional
+    @CacheEvict(value = "tasks", key = "#projectId")
     public TaskResponse.Summary createTask(Long projectId, TaskRequest.Create request) {
         User user = getCurrentUser();
         verifyProjectAccess(projectId, user);
@@ -66,7 +70,7 @@ public class TaskService {
     }
 
     // ----- LIST TASK FOR PROJECT -----
-
+    @Cacheable(value = "tasks", key = "#projectId")
     public List<TaskResponse.Summary> getTasksForProject(long projectId) {
         User user = getCurrentUser();
         verifyProjectAccess(projectId, user);
@@ -85,7 +89,8 @@ public class TaskService {
     }
 
     // ----- UPDATE TASK -----
-
+    @Transactional
+    @CacheEvict(value = "tasks", key = "#result.projectId()")
     public TaskResponse.Summary updateTask(Long taskId, TaskRequest.Update request) {
         User user = getCurrentUser();
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
@@ -108,6 +113,7 @@ public class TaskService {
 
     // ----- UPDATE STATUS -----
     @Transactional
+    @CacheEvict(value = "tasks", key = "#result.projectId()")
     public TaskResponse.Summary updateStatus(Long taskId, TaskRequest.StatusUpdate request) {
         User user = getCurrentUser();
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
@@ -122,6 +128,7 @@ public class TaskService {
     // ----- SOFT DELETE -----
 
     @Transactional
+    @CacheEvict(value = "tasks", allEntries = true)
     public void deleteTask(Long taskId) {
         User user = getCurrentUser();
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
