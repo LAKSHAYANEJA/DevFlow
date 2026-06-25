@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 
 import java.util.List;
 
@@ -37,6 +40,7 @@ public class ProjectService {
     // ----- CREATE PROJECT -----
 
     @Transactional
+    @CacheEvict(value = "projects", allEntries = true)
     public ProjectResponse.Summary createProject(ProjectRequest.Create request) {
         User owner = getCurrentUser();
 
@@ -67,6 +71,7 @@ public class ProjectService {
 
     // ----- GET ALL PROJECTS FOR USER -----
 
+    @Cacheable(value = "projects", key = "T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication().getName()")
     public List<ProjectResponse.Summary> getMyProjects() {
         User user = getCurrentUser();
 
@@ -74,6 +79,7 @@ public class ProjectService {
         stream().map(this::toSummary).toList();
     }
 
+    @Cacheable(value = "project", key = "#id")
     public ProjectResponse.Summary getProject(Long id) {
         User user = getCurrentUser();
         Project project = projectRepository.findById(id).
@@ -93,6 +99,11 @@ public class ProjectService {
     // ----- Update Project -----
 
     @Transactional
+    // @CacheEvict({"project", "projects"}, key = "#id", allEntries = false)
+    @Caching(evict = { 
+    @CacheEvict(value = "project", key = "#id"),
+    @CacheEvict(value = "projects", allEntries = true)
+    })
     public ProjectResponse.Summary updateProject(Long id, ProjectRequest.Update request) {
         User user = getCurrentUser();
         Project project = projectRepository.findById(id).
@@ -112,6 +123,10 @@ public class ProjectService {
     // ----- Delete Project -----
 
     @Transactional
+    @Caching( evict = {
+        @CacheEvict(value = "project", key = "#id"),
+        @CacheEvict(value = "projects", allEntries = true)
+    })
     public void deleteProject(Long id){
         User user = getCurrentUser();
         Project project = projectRepository.findById(id).orElseThrow(() -> new RuntimeException("Project not found"));

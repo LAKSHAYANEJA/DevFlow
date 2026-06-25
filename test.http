@@ -130,3 +130,29 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwia
 
 DELETE http://localhost:8080/api/v1/tasks/1
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxOTQwMzEyLCJleHAiOjE3ODE5NDEyMTJ9.Hx2UnRIG52SkRLFPBWVKDri7xsZOKUQL61bAinQwuKVLexh8LzVL6SDYVow2V9el
+
+
+### Get my projects - first call (cache miss, hits DB) 
+GET http://localhost:8080/api/v1/projects
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyMzIyNTU0LCJleHAiOjE3ODIzMjM0NTR9.aFbUN63gGv43mp5__DMzD6yDAfSyoK3yG185SEvALFPZ4Gz0OvERCZ84sultDwMM
+
+### Get my projects - second call (should be cache hit) 
+GET http://localhost:8080/api/v1/projects
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyMzIyNTU0LCJleHAiOjE3ODIzMjM0NTR9.aFbUN63gGv43mp5__DMzD6yDAfSyoK3yG185SEvALFPZ4Gz0OvERCZ84sultDwMM
+
+
+### Create project (should evict cache) 
+POST http://localhost:8080/api/v1/projects
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyMzc5NjAzLCJleHAiOjE3ODIzODA1MDN9.JyuF3StzV-lw23Rrm0rfwTk_Xh_8rkEJ8VzS037AYecLnxql-u0TmhoGo-RISTKA
+
+{
+    "name": "New Test Project",
+    "description": "Testing cache eviction",
+    "isPublic": true
+}
+
+
+### Get projects (should show new project + hit DB again) 
+GET http://localhost:8080/api/v1/projects
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyMzc5NjAzLCJleHAiOjE3ODIzODA1MDN9.JyuF3StzV-lw23Rrm0rfwTk_Xh_8rkEJ8VzS037AYecLnxql-u0TmhoGo-RISTKA
