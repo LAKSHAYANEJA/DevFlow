@@ -10,13 +10,14 @@ import com.devflow.repository.ProjectRepository;
 import com.devflow.repository.TaskRepository;
 import com.devflow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-
+import com.devflow.exception.RateLimitException;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.devflow.enums.TaskPriority;
+import com.devflow.exception.RateLimitException;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class TaskService {
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository projectMemberRepository;
     private final UserRepository userRepository;
+    private final RateLimitService rateLimitService;
 
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().
@@ -50,7 +52,18 @@ public class TaskService {
     @Transactional
     @CacheEvict(value = "tasks", key = "#projectId")
     public TaskResponse.Summary createTask(Long projectId, TaskRequest.Create request) {
+       
         User user = getCurrentUser();
+
+        // Rate Limit check - 10 task creations per minute per user
+
+        if(!rateLimitService.tryConsume(user.getEmail())) {
+            throw new RateLimitException(
+                "Rate limit exceeded. You can create maximum 10 tasks per minute. "+ 
+                "Available tokens : " + rateLimitService.getAvailableTokens(user.getEmail())
+            );
+        }
+
         verifyProjectAccess(projectId, user);
 
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new RuntimeException("Project not found"));

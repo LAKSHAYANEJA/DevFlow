@@ -23,6 +23,10 @@ public class TaskController {
     public ResponseEntity<TaskResponse.Summary> create(
         @PathVariable Long projectId,
         @Valid @RequestBody TaskRequest.Create request) {
+            TaskResponse.Summary task = taskService.createTask(projectId, request);
+            // return ResponseEntity.status(HttpStatus.CREATED)
+            // .header("X-RateLimit-Limit", "10").
+            // header("X-RateLimit-Remaining", String.valueOf(taskService.getRemainingTokens(projectId, request))).body(task);
             return ResponseEntity.status(HttpStatus.CREATED).body(taskService.createTask(projectId, request));
         }
     @GetMapping("/api/v1/projects/{projectId}/tasks")

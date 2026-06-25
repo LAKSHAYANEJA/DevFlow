@@ -156,3 +156,15 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwia
 ### Get projects (should show new project + hit DB again) 
 GET http://localhost:8080/api/v1/projects/2/tasks
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyMzgwNjMyLCJleHAiOjE3ODIzODE1MzJ9.R3eONqaHqh74KJ1KIE7hw4EuR39G4fTNsUH_uahsVEVXN1v4wZ5isugqrjPLU1Bv
+
+
+### Create task - send this 11 times rapidly
+POST http://localhost:8080/api/v1/projects/2/tasks
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyNDExMDQyLCJleHAiOjE3ODI0MTE5NDJ9.uy1u0aHtnz3NceeBTZ5oCrRByRRRr5ilx9hD0SrXVKcH8Dha_SXZxZw7PlI7YH1j
+
+{
+    "title" : "Rate limit test task",
+    "description" : "Testing rate limiting", 
+    "priority" : "LOW"
+}
