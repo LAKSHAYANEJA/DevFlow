@@ -17,7 +17,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.devflow.enums.TaskPriority;
+import com.devflow.enums.TaskStatus;
 import com.devflow.exception.RateLimitException;
+import com.devflow.enums.TaskStatus;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -50,7 +55,7 @@ public class TaskService {
     // ----- CREATE TASK -----
 
     @Transactional
-    @CacheEvict(value = "tasks", key = "#projectId")
+    // @CacheEvict(value = "tasks", key = "#projectId")
     public TaskResponse.Summary createTask(Long projectId, TaskRequest.Create request) {
        
         User user = getCurrentUser();
@@ -83,12 +88,41 @@ public class TaskService {
     }
 
     // ----- LIST TASK FOR PROJECT -----
-    @Cacheable(value = "tasks", key = "#projectId")
-    public List<TaskResponse.Summary> getTasksForProject(long projectId) {
+    // @Cacheable(value = "tasks", key = "#projectId")
+    public TaskResponse.PagedResult getTasksForProject(
+        Long projectId,
+        int page,
+        int size,
+        String status,
+        Long assigneeId
+    ) {
         User user = getCurrentUser();
         verifyProjectAccess(projectId, user);
 
-        return taskRepository.findByProjectIdOrderByCreatedAtDesc(projectId).stream().map(this::toSummary).toList();
+        TaskStatus taskStatus = null;
+        if(status != null && !status.isBlank()){
+            try{
+                taskStatus = TaskStatus.valueOf(status.toUpperCase());
+            }
+            catch(IllegalArgumentException e){
+                throw new RuntimeException("Invalid status : "+status);
+            }
+        }
+
+        Pageable pageable = org.springframework.data.domain.PageRequest.of(page, size);
+
+        org.springframework.data.domain.Page<Task> taskPage = 
+        taskRepository.findByProjectIdWithFilters(projectId, taskStatus, assigneeId, pageable);
+
+        return new TaskResponse.PagedResult(
+            taskPage.getContent().stream().map(this::toSummary).toList(),
+            taskPage.getNumber(),
+            taskPage.getSize(),
+            taskPage.getTotalElements(),
+            taskPage.getTotalPages(),
+            taskPage.isLast()
+        );
+        // return taskRepository.findByProjectIdOrderByCreatedAtDesc(projectId).stream().map(this::toSummary).toList();
     }
 
     // ----- GET SINGLE TASK -----

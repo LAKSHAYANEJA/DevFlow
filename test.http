@@ -192,3 +192,25 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwia
 {
     "title" : "Second user update"
 }
+
+### Get tasks with pagination 
+
+GET http://localhost:8080/api/v1/projects/2/tasks?page=0&size=5
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyNDQ2OTY3LCJleHAiOjE3ODI0NDc4Njd9.nNEE8LA-eqFFvk3NX0UT6FGdE0vKkj1mQQWAzlQgBpMqnosmHYsqVlg5LkdFBk4Y
+
+### Get tasks filtered by status
+GET http://localhost:8080/api/v1/projects/2/tasks?status+TODO&page=0&size=5
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyNDQ2OTY3LCJleHAiOjE3ODI0NDc4Njd9.nNEE8LA-eqFFvk3NX0UT6FGdE0vKkj1mQQWAzlQgBpMqnosmHYsqVlg5LkdFBk4Y
+
+### Page 2 
+
+GET http://localhost:8080/api/v1/projects/2/tasks?page=1&size=5
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyNDUxNzQ0LCJleHAiOjE3ODI0NTI2NDR9.vWubb-_8vvruTy1S-3YeRT-1cuhkYQ5BoHdFooHlljp-2KSV-KrsydUeacEvo0qq
+
+
+### Filter by status 
+GET http://localhost:8080/api/v1/projects/2/tasks?status+TODO&page=0&size=5
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyNDUxNzQ0LCJleHAiOjE3ODI0NTI2NDR9.vWubb-_8vvruTy1S-3YeRT-1cuhkYQ5BoHdFooHlljp-2KSV-KrsydUeacEvo0qq
+
+
+

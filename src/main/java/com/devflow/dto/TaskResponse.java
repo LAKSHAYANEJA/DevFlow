@@ -5,6 +5,7 @@ import com.devflow.enums.TaskStatus;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 public class TaskResponse {
 
@@ -21,5 +22,14 @@ public class TaskResponse {
     String prUrl,
     Instant createdAt,
     Instant updatedAt
+    ){}
+
+    public record PagedResult(
+        List<Summary> content,
+        int page,
+        int size,
+        long totalElements,
+        int totalPages,
+        boolean last
     ){}
 }

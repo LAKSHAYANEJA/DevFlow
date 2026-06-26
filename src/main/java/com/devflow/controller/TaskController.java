@@ -30,8 +30,13 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.CREATED).body(taskService.createTask(projectId, request));
         }
     @GetMapping("/api/v1/projects/{projectId}/tasks")
-    public ResponseEntity<List<TaskResponse.Summary>> getTasksForProjects(@PathVariable Long projectId) {
-        return ResponseEntity.ok(taskService.getTasksForProject(projectId));
+    public ResponseEntity<TaskResponse.PagedResult> getTasksForProjects(@PathVariable Long projectId
+        , @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(required = false) String status,
+        @RequestParam(required = false) Long assigneeId
+    ) {
+        return ResponseEntity.ok(taskService.getTasksForProject(projectId, page, size, status, assigneeId));
     }
 
     @GetMapping("/api/v1/tasks/{id}")
