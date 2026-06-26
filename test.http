@@ -168,3 +168,27 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwia
     "description" : "Testing rate limiting", 
     "priority" : "LOW"
 }
+
+### Get current task
+GET http://localhost:8080/api/v1/tasks/2
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyNDExMDQyLCJleHAiOjE3ODI0MTE5NDJ9.uy1u0aHtnz3NceeBTZ5oCrRByRRRr5ilx9hD0SrXVKcH8Dha_SXZxZw7PlI7YH1j
+
+
+### Update task - first user
+
+GET  http://localhost:8080/api/v1/tasks/2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyNDEyMDI5LCJleHAiOjE3ODI0MTI5Mjl9.Ky1MU8nzeTfjuW35ph0h7TuIK_H2cOcc3n-9hYdDvwAaDL5x-HVqbrcMixQ_XOAy
+
+{
+    "title" : "First user update"
+}
+
+### Update task - second user (concurrent)
+GET  http://localhost:8080/api/v1/tasks/2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyNDEyMDI5LCJleHAiOjE3ODI0MTI5Mjl9.Ky1MU8nzeTfjuW35ph0h7TuIK_H2cOcc3n-9hYdDvwAaDL5x-HVqbrcMixQ_XOAy
+
+{
+    "title" : "Second user update"
+}
