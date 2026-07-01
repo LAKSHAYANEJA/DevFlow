@@ -1,5 +1,6 @@
 package com.devflow.service;
 
+import com.devflow.dto.LabelResponse;
 import com.devflow.dto.TaskRequest;
 import com.devflow.dto.TaskResponse;
 import com.devflow.entity.Project;
@@ -200,6 +201,13 @@ public class TaskService {
             t.getAssignee() != null ? t.getAssignee().getId() : null,
             t.getDueDate(),
             t.getPrUrl(),
+            t.getLabels().stream().
+            map(l -> new LabelResponse.Summary(
+                l.getId(),
+                l.getProject().getId(),
+                l.getName(),
+                l.getColor()
+            )).toList(),
             t.getCreatedAt(),
             t.getUpdatedAt()
         );

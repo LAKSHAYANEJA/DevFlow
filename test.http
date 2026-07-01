@@ -234,12 +234,12 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwia
 }
 
 ### List labels for project
-GET http://localhost:8080/api/v1/projects/2/labels
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyODc4OTcxLCJleHAiOjE3ODI4Nzk4NzF9.jvsTobm1_sGaz_7mhm922M9eF8WI4E1ZLfWvznIeF5BvRRjjXxYHvVjCndB2lH9E
-
+GET http://localhost:8080/api/v1/tasks/2
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyODk5OTc4LCJleHAiOjE3ODI5MDA4Nzh9.r6VOYsXS7UDqH5OiNkLej1DLSeKQByb6fMuEktRwCsHsH3Cg8NSlnfjg-v6GM-X6
 ### Attach label to task (use label id from response above)
 POST http://localhost:8080/api/v1/tasks/2/labels/1
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyODc5MzUzLCJleHAiOjE3ODI4ODAyNTN9.aFXmiRjvE53DdDALR_9wWEly3pasX_iYm0zfwtT8De2HKTrVe7ZVPnIqghBpTOUh
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyODk5OTc4LCJleHAiOjE3ODI5MDA4Nzh9.r6VOYsXS7UDqH5OiNkLej1DLSeKQByb6fMuEktRwCsHsH3Cg8NSlnfjg-v6GM-X6
+
 ### Remove label from task
 DELETE http://localhost:8080/api/v1/tasks/2/labels/1
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyODc5MzUzLCJleHAiOjE3ODI4ODAyNTN9.aFXmiRjvE53DdDALR_9wWEly3pasX_iYm0zfwtT8De2HKTrVe7ZVPnIqghBpTOUh

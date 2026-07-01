@@ -20,6 +20,7 @@ public class TaskResponse {
     Long assigneeId,
     LocalDate dueDate,
     String prUrl,
+    List<LabelResponse.Summary> labels,
     Instant createdAt,
     Instant updatedAt
     ){}
