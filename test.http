@@ -213,4 +213,35 @@ GET http://localhost:8080/api/v1/projects/2/tasks?status+TODO&page=0&size=5
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyNDUxNzQ0LCJleHAiOjE3ODI0NTI2NDR9.vWubb-_8vvruTy1S-3YeRT-1cuhkYQ5BoHdFooHlljp-2KSV-KrsydUeacEvo0qq
 
 
+### Create label
+POST http://localhost:8080/api/v1/projects/2/labels
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyODc4OTcxLCJleHAiOjE3ODI4Nzk4NzF9.jvsTobm1_sGaz_7mhm922M9eF8WI4E1ZLfWvznIeF5BvRRjjXxYHvVjCndB2lH9E
+
+{
+    "name" : "bug",
+    "color" : "#FF5733"
+}
+
+### Create another label
+POST http://localhost:8080/api/v1/projects/2/labels
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyODc4OTcxLCJleHAiOjE3ODI4Nzk4NzF9.jvsTobm1_sGaz_7mhm922M9eF8WI4E1ZLfWvznIeF5BvRRjjXxYHvVjCndB2lH9E
+
+{
+    "name" : "feature",
+    "color" : "#33FF57"
+}
+
+### List labels for project
+GET http://localhost:8080/api/v1/projects/2/labels
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyODc4OTcxLCJleHAiOjE3ODI4Nzk4NzF9.jvsTobm1_sGaz_7mhm922M9eF8WI4E1ZLfWvznIeF5BvRRjjXxYHvVjCndB2lH9E
+
+### Attach label to task (use label id from response above)
+POST http://localhost:8080/api/v1/tasks/2/labels/1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyODc5MzUzLCJleHAiOjE3ODI4ODAyNTN9.aFXmiRjvE53DdDALR_9wWEly3pasX_iYm0zfwtT8De2HKTrVe7ZVPnIqghBpTOUh
+### Remove label from task
+DELETE http://localhost:8080/api/v1/tasks/2/labels/1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyODc5MzUzLCJleHAiOjE3ODI4ODAyNTN9.aFXmiRjvE53DdDALR_9wWEly3pasX_iYm0zfwtT8De2HKTrVe7ZVPnIqghBpTOUh
+
 

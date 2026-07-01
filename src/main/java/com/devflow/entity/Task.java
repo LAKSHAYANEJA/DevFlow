@@ -69,5 +69,15 @@ public class Task {
 
     public void softDelete() {
         this.deletedAt = Instant.now();
-    }   
+    }
+    
+    @ManyToMany
+    @JoinTable(
+        name = "task_labels",
+        joinColumns = @JoinColumn(name = "task_id"),
+        inverseJoinColumns = @JoinColumn(name = "label_id")
+    )
+
+    @Builder.Default
+    private java.util.Set<Label> labels = new java.util.HashSet<>();
 }
