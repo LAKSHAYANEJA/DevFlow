@@ -245,3 +245,30 @@ DELETE http://localhost:8080/api/v1/tasks/2/labels/1
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgyODc5MzUzLCJleHAiOjE3ODI4ODAyNTN9.aFXmiRjvE53DdDALR_9wWEly3pasX_iYm0zfwtT8De2HKTrVe7ZVPnIqghBpTOUh
 
 
+### Change task status (this should log an activity)
+
+PATCH http://localhost:8080/api/v1/tasks/2/status
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgzMDU1NzEwLCJleHAiOjE3ODMwNTY2MTB9.a1-AAOuxwwR-4MFDPdGituNxD8Ve8MkRykRq9vsAh2Xf_YCu5VALIUcuXCHznPya
+
+{
+    "status" : "IN_PROGRESS"
+}
+
+### Change it again
+
+PATCH http://localhost:8080/api/v1/tasks/2/status
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgzMDU1NzEwLCJleHAiOjE3ODMwNTY2MTB9.a1-AAOuxwwR-4MFDPdGituNxD8Ve8MkRykRq9vsAh2Xf_YCu5VALIUcuXCHznPya
+
+{
+    "status" : "IN_REVIEW"
+}
+
+### Get Activity Log
+
+GET http://localhost:8080/api/v1/tasks/2/activity
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgzMDU1NzEwLCJleHAiOjE3ODMwNTY2MTB9.a1-AAOuxwwR-4MFDPdGituNxD8Ve8MkRykRq9vsAh2Xf_YCu5VALIUcuXCHznPya
+
+
+

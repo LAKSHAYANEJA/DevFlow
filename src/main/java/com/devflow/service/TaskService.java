@@ -24,6 +24,9 @@ import com.devflow.enums.TaskStatus;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import com.devflow.repository.ActivityLogRepository;
+import com.devflow.entity.ActivityLog;
+import com.devflow.dto.ActivityLogResponse;
 
 import java.util.List;
 
@@ -35,6 +38,7 @@ public class TaskService {
     private final ProjectMemberRepository projectMemberRepository;
     private final UserRepository userRepository;
     private final RateLimitService rateLimitService;
+    private final ActivityLogRepository activityLogRepository;
 
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().
@@ -153,7 +157,18 @@ public class TaskService {
 
         if(request.assigneeId() != null) {
             User assignee = userRepository.findById(request.assigneeId()).orElseThrow(() -> new RuntimeException("Assignee not found"));
+            
+            String oldAssignee = task.getAssignee() != null ? 
+            task.getAssignee().getName() : "unassigned";
             task.setAssignee(assignee);
+
+            activityLogRepository.save(ActivityLog.builder()
+            .task(task)
+            .actor(user)
+            .action("ASSIGNEE_CHANGED")
+            .oldValue(oldAssignee)
+            .newValue(assignee.getName())
+            .build());
         }
 
         return toSummary(taskRepository.save(task));
@@ -168,9 +183,20 @@ public class TaskService {
 
         verifyProjectAccess(task.getProject().getId(), user);
 
+        String oldStatus = task.getStatus().name();
         task.setStatus(request.status());
 
-        return toSummary(taskRepository.save(task));
+        Task saved = taskRepository.save(task);
+
+        activityLogRepository.save(ActivityLog.builder()
+        .task(saved)
+        .actor(user)
+        .action("STATUS_CHANGED")
+        .oldValue(oldStatus)
+        .newValue(request.status().name())
+        .build());
+
+        return toSummary(saved);
     }
 
     // ----- SOFT DELETE -----
@@ -186,6 +212,28 @@ public class TaskService {
         task.softDelete();
         taskRepository.save(task);
     }
+
+
+
+    public List<ActivityLogResponse.Entry> getActivity(Long taskId) {
+        User user = getCurrentUser();
+        Task task = taskRepository.findById(taskId)
+        .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        verifyProjectAccess(task.getProject().getId(), user);
+
+        return activityLogRepository.findByTaskIdOrderByCreatedAtDesc(taskId)
+        .stream().
+        map(log -> new ActivityLogResponse.Entry(
+            log.getId(),
+            log.getActor().getName(),
+            log.getAction(),
+            log.getOldValue(),
+            log.getNewValue(),
+            log.getCreatedAt()
+        )).toList();
+    }
+
 
     // ----- MAPPER -----
 

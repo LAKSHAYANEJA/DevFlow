@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.devflow.dto.ActivityLogResponse;
 
 
 @RestController
@@ -63,7 +64,15 @@ public class TaskController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
+
     }
+
+    @GetMapping("/api/v1/tasks/{id}/activity")
+    public ResponseEntity<List<ActivityLogResponse.Entry>> getActivity(@PathVariable Long id)
+    {
+        return ResponseEntity.ok(taskService.getActivity(id));
+    }
+    
     
     
 }
