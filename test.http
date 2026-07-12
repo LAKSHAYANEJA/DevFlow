@@ -271,4 +271,40 @@ GET http://localhost:8080/api/v1/tasks/2/activity
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgzMDU1NzEwLCJleHAiOjE3ODMwNTY2MTB9.a1-AAOuxwwR-4MFDPdGituNxD8Ve8MkRykRq9vsAh2Xf_YCu5VALIUcuXCHznPya
 
 
+### Register second user 
+POST http://localhost:8080/api/v1/auth/register
+Content-Type: application/json
 
+{
+    "name" : "Member User",
+    "email" : "member@devflow.com",
+    "password" : "password123"
+}
+
+### Login as owner (test@devflow.com)
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "email" : "test@devflow.com",
+    "password" : "password123"
+}
+
+### Invite member
+POST http://localhost:8080/api/v1/projects/2/members
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgzODY3ODYwLCJleHAiOjE3ODM4Njg3NjB9.GgBbIq9ttVC3jfRZGgMDZzpEb35YcS_NspNxoRb2LHzcEhgn4Yl5dzxCnxL_rwgT
+
+{
+    "email" : "member@devflow.com"
+}
+
+### List members
+
+GET http://localhost:8080/api/v1/projects/2/members
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgzODY3ODYwLCJleHAiOjE3ODM4Njg3NjB9.GgBbIq9ttVC3jfRZGgMDZzpEb35YcS_NspNxoRb2LHzcEhgn4Yl5dzxCnxL_rwgT
+
+### Remove member
+
+DELETE http://localhost:8080/api/v1/projects/2/members/2
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgzODY3ODYwLCJleHAiOjE3ODM4Njg3NjB9.GgBbIq9ttVC3jfRZGgMDZzpEb35YcS_NspNxoRb2LHzcEhgn4Yl5dzxCnxL_rwgT
