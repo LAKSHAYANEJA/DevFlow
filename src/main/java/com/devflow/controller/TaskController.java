@@ -36,9 +36,10 @@ public class TaskController {
         , @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "10") int size,
         @RequestParam(required = false) String status,
-        @RequestParam(required = false) Long assigneeId
+        @RequestParam(required = false) Long assigneeId,
+        @RequestParam(required = false) Long labelId
     ) {
-        return ResponseEntity.ok(taskService.getTasksForProject(projectId, page, size, status, assigneeId));
+        return ResponseEntity.ok(taskService.getTasksForProject(projectId, page, size, status, assigneeId, labelId));
     }
 
     @GetMapping("/api/v1/tasks/{id}")

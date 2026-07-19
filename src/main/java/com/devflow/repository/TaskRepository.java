@@ -17,10 +17,12 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     // List<Task> findByProjectIdOrderByCreatedAtDesc(Long projectId);
 
     @Query("""
-            SELECT t FROM Task t
+            SELECT DISTINCT t FROM Task t
+            LEFT JOIN  t.labels l
             WHERE t.project.id = :projectId
             AND (:status IS NULL OR t.status = :status)
             AND (:assigneeId IS NULL OR t.assignee.id = :assigneeId)
+            AND (:labelId IS NULL OR l.id = :labelId)
             ORDER BY t.createdAt DESC
             """)
 
@@ -28,6 +30,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
                 @Param("projectId") Long projectId,
                 @Param("status") TaskStatus status,
                 @Param("assigneeId") Long assigneeId,
+                @Param("labelId") Long labelId,
                 Pageable pageable
             );
 }

@@ -99,7 +99,8 @@ public class TaskService {
         int page,
         int size,
         String status,
-        Long assigneeId
+        Long assigneeId,
+        Long labelId
     ) {
         User user = getCurrentUser();
         verifyProjectAccess(projectId, user);
@@ -117,7 +118,7 @@ public class TaskService {
         Pageable pageable = org.springframework.data.domain.PageRequest.of(page, size);
 
         org.springframework.data.domain.Page<Task> taskPage = 
-        taskRepository.findByProjectIdWithFilters(projectId, taskStatus, assigneeId, pageable);
+        taskRepository.findByProjectIdWithFilters(projectId, taskStatus, assigneeId, labelId, pageable);
 
         return new TaskResponse.PagedResult(
             taskPage.getContent().stream().map(this::toSummary).toList(),
