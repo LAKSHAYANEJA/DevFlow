@@ -13,13 +13,13 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-redis:
+  redis:
     image: redis:7-alpine
     container_name: devflow-redis
     ports:
       - "6379:6379"
 
-app:
+  app:
     build: .
     container_name: devflow-app
     ports:

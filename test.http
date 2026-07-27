@@ -308,3 +308,32 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwia
 
 DELETE http://localhost:8080/api/v1/projects/2/members/2
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgzODY3ODYwLCJleHAiOjE3ODM4Njg3NjB9.GgBbIq9ttVC3jfRZGgMDZzpEb35YcS_NspNxoRb2LHzcEhgn4Yl5dzxCnxL_rwgT
+
+
+### Register on live URL
+POST https://devflow-production-2a28.up.railway.app/api/v1/auth/register
+Content-Type: application/json
+
+{
+    "name" : "Test User",
+    "email" : "test@devflow.com",
+    "password" : "password123"
+}
+
+### Login on live URL
+POST https://devflow-production-2a28.up.railway.app/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "email" : "test@devflow.com",
+    "password" : "password123"
+}
+
+
+### Get projects on live URL
+GET https://devflow-production-2a28.up.railway.app/api/v1/projects
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzg0NTI3MjI2LCJleHAiOjE3ODQ1MjgxMjZ9.ajRlTSlLbJ8-G0KAlBMWAtWmgp6MyH76engFrXL_gMh5aV6Yzl3ExjAz72CIqhj3
+
+### Get users/me
+GET https://devflow-production-2a28.up.railway.app/api/v1/users/me
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzg0NTI3MjI2LCJleHAiOjE3ODQ1MjgxMjZ9.ajRlTSlLbJ8-G0KAlBMWAtWmgp6MyH76engFrXL_gMh5aV6Yzl3ExjAz72CIqhj3
