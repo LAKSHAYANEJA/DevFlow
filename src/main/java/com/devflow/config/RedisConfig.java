@@ -59,6 +59,13 @@ public class RedisConfig {
             mapper, mapper.getTypeFactory().constructCollectionType(List.class, ProjectResponse.Summary.class)    
         );
 
+        Jackson2JsonRedisSerializer<ProjectResponse.Summary> projectSerializer = new Jackson2JsonRedisSerializer<>(mapper, mapper.getTypeFactory().constructType(ProjectResponse.Summary.class));
+
+        RedisCacheConfiguration projectConfig = RedisCacheConfiguration.defaultCacheConfig().
+        entryTtl(Duration.ofMinutes(5)).
+        serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer())).
+        serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(projectSerializer)).disableCachingNullValues();
+
         RedisCacheConfiguration listConfig = RedisCacheConfiguration.defaultCacheConfig()
         .entryTtl(Duration.ofMinutes(5)).
         serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
@@ -69,6 +76,6 @@ public class RedisConfig {
         RedisCacheConfiguration defaultConfig = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(5)).
         serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer())).disableCachingNullValues();
 
-        return RedisCacheManager.builder(connectionFactory).cacheDefaults(defaultConfig).withInitialCacheConfigurations(Map.of("projects", listConfig, "tasks", taskListConfig)).build();
+        return RedisCacheManager.builder(connectionFactory).cacheDefaults(defaultConfig).withInitialCacheConfigurations(Map.of("projects", listConfig, "tasks", taskListConfig, "project", projectConfig)).build();
     }
 }

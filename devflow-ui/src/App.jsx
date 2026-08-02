@@ -1,9 +1,11 @@
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { Toaster } from "react-hot-toast";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Projects from "./pages/Projects";
 import Board from "./pages/Board";
+import Members from "./pages/Members";
 
 function ProtectedRoute({ children }) {
   const {user, loading }= useAuth();
@@ -33,6 +35,10 @@ function App() {
           } />
 
           <Route path="*" element={<Navigate to="/projects" />} />
+          <Route path="/projects/:id/members" element={
+            <ProtectedRoute> <Members /></ProtectedRoute>
+          }
+           />
       </Routes>
       </BrowserRouter>
     </AuthProvider>

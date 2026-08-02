@@ -28,7 +28,14 @@ const login = async (email, password) => {
     localStorage.setItem('accessToken', res.data.accessToken);
     setUser(res.data.user);
     return res.data;
-}
+};
+
+const register = async (name, email, password) => {
+    const res = await api.post('/api/v1/auth/register', {name, email, password});
+    localStorage.setItem('accessToken', res.data.accessToken);
+    setUser(res.data.user);
+    return res.data;
+};
 
 const logout = () => {
     localStorage.removeItem('accessToken');
@@ -36,7 +43,7 @@ const logout = () => {
 };
 
 return (
-    <AuthContext.Provider value={{ user, loading, login, logout}}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout}}>
         {children}
     </AuthContext.Provider>
 );

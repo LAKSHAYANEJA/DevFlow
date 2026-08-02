@@ -143,7 +143,7 @@ public class TaskService {
 
     // ----- UPDATE TASK -----
     @Transactional
-    @CacheEvict(value = "tasks", key = "#result.projectId()")
+    // @CacheEvict(value = "tasks", key = "#result.projectId()")
     public TaskResponse.Summary updateTask(Long taskId, TaskRequest.Update request) {
         User user = getCurrentUser();
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
@@ -177,7 +177,7 @@ public class TaskService {
 
     // ----- UPDATE STATUS -----
     @Transactional
-    @CacheEvict(value = "tasks", key = "#result.projectId()")
+    // @CacheEvict(value = "tasks", key = "#result.projectId()")
     public TaskResponse.Summary updateStatus(Long taskId, TaskRequest.StatusUpdate request) {
         User user = getCurrentUser();
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
@@ -203,7 +203,7 @@ public class TaskService {
     // ----- SOFT DELETE -----
 
     @Transactional
-    @CacheEvict(value = "tasks", allEntries = true)
+    // @CacheEvict(value = "tasks", allEntries = true)
     public void deleteTask(Long taskId) {
         User user = getCurrentUser();
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
