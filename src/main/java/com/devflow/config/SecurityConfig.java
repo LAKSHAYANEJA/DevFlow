@@ -84,7 +84,8 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of(
             "http://localhost:5173",
             "http://localhost:3000",
-            "https://dev-flow-mu-three.vercel.app/"
+            "https://dev-flow-mu-three.vercel.app/",
+            "https://dev-flow-git-main-laproject.vercel.app"
         ));
         config.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
