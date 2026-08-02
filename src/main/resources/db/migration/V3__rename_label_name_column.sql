@@ -1,0 +1,1 @@
+ALTER TABLE labels RENAME COLUMN label_name to name;
