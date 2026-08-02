@@ -37,3 +37,7 @@ build/
 *.pem
 *.key
 *.p12
+n# Environment Variables
+.env
+.env.*
+!.env.example
