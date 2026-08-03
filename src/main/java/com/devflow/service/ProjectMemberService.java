@@ -99,7 +99,7 @@ public class ProjectMemberService {
                 project.getCreatedAt()
             ));
         }
-            return projectMemberRepository.findByProjectId(projectId).stream().map(this::toSummary).toList();
+            return members;
         
     }
 
