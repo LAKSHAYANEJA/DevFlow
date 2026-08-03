@@ -81,6 +81,24 @@ public class ProjectMemberService {
         if(!hasAccess) {
             throw new RuntimeException("Access Denied");
         }
+
+        // Get invited members
+        List<MemberResponse.Summary> members = new java.util.ArrayList<>(
+            projectMemberRepository.findByProjectId(projectId).stream().map(this::toSummary).toList()
+        );
+
+        // Add owner at the top if not already in the list 
+        boolean ownerInList = members.stream().anyMatch(m -> m.userId().equals(project.getOwner().getId()));
+
+        if(!ownerInList) {
+            members.add(0, new MemberResponse.Summary(
+                project.getOwner().getId(),
+                project.getOwner().getName(),
+                project.getOwner().getEmail(),
+                com.devflow.enums.Role.ADMIN,
+                project.getCreatedAt()
+            ));
+        }
             return projectMemberRepository.findByProjectId(projectId).stream().map(this::toSummary).toList();
         
     }
