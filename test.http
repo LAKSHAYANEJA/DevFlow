@@ -30,7 +30,7 @@ GET http://localhost:8080/api/v1/test
 
 POST http://localhost:8080/api/v1/projects
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxOTM4NjE0LCJleHAiOjE3ODE5Mzk1MTR9.B_Xq9WUf1jQfQdwxA0ARogQsa8VPXbHae7w-7ocSI5BsCeiVhPPbj2FF6lgvCARW
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzg4Njg3NTI2LCJleHAiOjE3ODg3NzM5MjZ9.YglbobHgJdY4MqCofJK_AKP4sgrJokb4p7Sns9OXgcWAbklRQMy12lsEiaMS5BlxvaXmEddRkrINkV39JHYolQ
 
 # HTTP/1.1 201 
 # X-Content-Type-Options: nosniff
@@ -62,8 +62,8 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwia
 
 ### Get my projects
 
-# GET http://localhost:8080/api/v1/projects
-# Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzgxNzIyMjc3LCJleHAiOjE3ODE3MjMxNzd9.VfptyuDhuK2I8rmQflfLNcRFnQyg_IC6hoXC2Dd5TstXfSaEQrQ3Elij90fLWoHd
+GET http://localhost:8080/api/v1/projects
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzg4Njg3NTI2LCJleHAiOjE3ODg3NzM5MjZ9.YglbobHgJdY4MqCofJK_AKP4sgrJokb4p7Sns9OXgcWAbklRQMy12lsEiaMS5BlxvaXmEddRkrINkV39JHYolQ
 
 ### Get single project (use id from create response) 
 # GET http://localhost:8080/api/v1/projects/1
@@ -349,3 +349,111 @@ Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwia
 ### Get labels
 GET http://localhost:8080/api/v1/projects/9/labels
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzg1NTg2NTEwLCJleHAiOjE3ODU2NzI5MTB9.0zhC7T35e0Je0EY19RPe-rKkAfXqxVR_40MJaaDE3LVknR0oTNBBZGBSf2YFTfQo   
+
+### Login (should store refresh token in DB now)
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "email" : "test@devflow.com",
+    "password" : "newpassword123"
+}
+
+### Logout (should delete refresh token from DB)
+POST http://localhost:8080/api/v1/auth/logout
+Content-Type: application/json
+
+{
+    "refreshToken" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwidHlwZSI6InJlZnJlc2giLCJqdGkiOiIyMWZmMjAyZS03MWRhLTQ2N2UtOTMwMS1mMDgxZWUzMzcyM2YiLCJpYXQiOjE3ODg3NTE0ODAsImV4cCI6MTc4OTM1NjI4MH0.JvgBJEUmBjEPvNnCVH7n96TglngxYZKeFu-I64Jc-yFNKDWTFf4hz2Qaav6t5IglrmrRv6BkPsnt_59uqgHnTg"
+}
+
+### Refresh token (should generate new access token)
+POST http://localhost:8080/api/v1/auth/refresh
+Content-Type: application/json
+
+{
+    "refreshToken" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwidHlwZSI6InJlZnJlc2giLCJqdGkiOiIyMWZmMjAyZS03MWRhLTQ2N2UtOTMwMS1mMDgxZWUzMzcyM2YiLCJpYXQiOjE3ODg3NTE0ODAsImV4cCI6MTc4OTM1NjI4MH0.JvgBJEUmBjEPvNnCVH7n96TglngxYZKeFu-I64Jc-yFNKDWTFf4hz2Qaav6t5IglrmrRv6BkPsnt_59uqgHnTg"
+}
+
+### Change password
+POST http://localhost:8080/api/v1/auth/change-password
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzg4NzUxNDgwLCJleHAiOjE3ODg4Mzc4ODB9.M55EOamI5FBIj43D5yDmqN9gbbYecbJDyHoGUjt72i0NRvz3JARfkb69ncaSC9nlIMV90_4h1CRyPIqV9kZJng
+
+{
+    "oldPassword" : "password123",
+    "newPassword" : "newpassword123"
+}
+
+# ---------------------------
+# 30 Sept 2026
+
+
+### Get my profile (enhanced)
+GET http://localhost:8080/api/v1/users/me
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzkwNzQ5NDI5LCJleHAiOjE3OTA4MzU4Mjl9.Lo1iKLjVNDMcUM_ELPfxuZnpRTvApaSdu9709s8JyBhRTeURf1smc8JKhTa5mthc3Z9Y5Npixsh9v8lO_KTnOA
+
+### Update profile
+PATCH http://localhost:8080/api/v1/users/me
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzkwNzQ5NDI5LCJleHAiOjE3OTA4MzU4Mjl9.Lo1iKLjVNDMcUM_ELPfxuZnpRTvApaSdu9709s8JyBhRTeURf1smc8JKhTa5mthc3Z9Y5Npixsh9v8lO_KTnOA
+
+{
+  "name": "Test User Updated",
+  "bio": "Backend developer building DevFlow"
+}
+
+### Archive a project
+PATCH http://localhost:8080/api/v1/projects/2/archive
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzkwNzQ5NDI5LCJleHAiOjE3OTA4MzU4Mjl9.Lo1iKLjVNDMcUM_ELPfxuZnpRTvApaSdu9709s8JyBhRTeURf1smc8JKhTa5mthc3Z9Y5Npixsh9v8lO_KTnOA
+
+### Add comment to task
+POST http://localhost:8080/api/v1/tasks/2/comments
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzkwNzQ5NDI5LCJleHAiOjE3OTA4MzU4Mjl9.Lo1iKLjVNDMcUM_ELPfxuZnpRTvApaSdu9709s8JyBhRTeURf1smc8JKhTa5mthc3Z9Y5Npixsh9v8lO_KTnOA
+
+{
+  "content": "This task needs the Redis config updated before it can be completed."
+}
+
+### Get comments for task
+GET http://localhost:8080/api/v1/tasks/2/comments
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzkwNzQ5NDI5LCJleHAiOjE3OTA4MzU4Mjl9.Lo1iKLjVNDMcUM_ELPfxuZnpRTvApaSdu9709s8JyBhRTeURf1smc8JKhTa5mthc3Z9Y5Npixsh9v8lO_KTnOA
+
+### Update comment
+PATCH http://localhost:8080/api/v1/comments/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzkwNzQ5NDI5LCJleHAiOjE3OTA4MzU4Mjl9.Lo1iKLjVNDMcUM_ELPfxuZnpRTvApaSdu9709s8JyBhRTeURf1smc8JKhTa5mthc3Z9Y5Npixsh9v8lO_KTnOA
+
+{
+  "content": "Updated comment content"
+}
+
+### Delete comment
+DELETE http://localhost:8080/api/v1/comments/1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzkwNzQ5NDI5LCJleHAiOjE3OTA4MzU4Mjl9.Lo1iKLjVNDMcUM_ELPfxuZnpRTvApaSdu9709s8JyBhRTeURf1smc8JKhTa5mthc3Z9Y5Npixsh9v8lO_KTnOA
+
+# ---------------------------------------------------------------------------------------------
+
+# 07 October 2026
+
+### My assigned tasks
+GET http://localhost:8080/api/v1/tasks/assigned-to-me
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzkxMzUzMjU3LCJleHAiOjE3OTE0Mzk2NTd9.fw91g7JiS6PSEJd3i-BqEPxqxwh13dFZNqKS2pltONl6MRi2m3psKpkY5ienq6u7MDydNiOwjaCVS-reVZsjLw
+
+### Assign task to member (must be project member)
+PATCH http://localhost:8080/api/v1/tasks/2/assign
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzkxMzUzMjU3LCJleHAiOjE3OTE0Mzk2NTd9.fw91g7JiS6PSEJd3i-BqEPxqxwh13dFZNqKS2pltONl6MRi2m3psKpkY5ienq6u7MDydNiOwjaCVS-reVZsjLw
+
+{
+  "assigneeId": 2
+}
+
+### Unassign task
+DELETE http://localhost:8080/api/v1/tasks/2/assign
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzkxMzUzMjU3LCJleHAiOjE3OTE0Mzk2NTd9.fw91g7JiS6PSEJd3i-BqEPxqxwh13dFZNqKS2pltONl6MRi2m3psKpkY5ienq6u7MDydNiOwjaCVS-reVZsjLw
+
+### Project stats and workload
+GET http://localhost:8080/api/v1/projects/9/stats
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGRldmZsb3cuY29tIiwiaWF0IjoxNzkxMzUzMjU3LCJleHAiOjE3OTE0Mzk2NTd9.fw91g7JiS6PSEJd3i-BqEPxqxwh13dFZNqKS2pltONl6MRi2m3psKpkY5ienq6u7MDydNiOwjaCVS-reVZsjLw

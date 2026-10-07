@@ -3,8 +3,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from '../api/axios';
 import Navbar from "../components/Navbar";
 import toast from "react-hot-toast";
+import { usePageTitle } from "../hooks/usePageTitle";
+
 
 export default function Members(){
+    usePageTitle('Members');
     const {id} = useParams();
     const navigate = useNavigate();
 

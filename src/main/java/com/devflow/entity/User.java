@@ -42,6 +42,9 @@ public class User implements UserDetails {
     @Builder.Default
     private Role role = Role.MEMBER;
 
+    @Column(length = 500)
+    private String bio;
+
     @Column(name = "avatar_url")
     private String avatarUrl;
 

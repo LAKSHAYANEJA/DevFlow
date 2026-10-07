@@ -5,6 +5,7 @@ import com.devflow.dto.ProjectResponse;
 import com.devflow.entity.Project;
 import com.devflow.entity.ProjectMember;
 import com.devflow.entity.User;
+import com.devflow.enums.ProjectStatus;
 import com.devflow.enums.Role;
 import com.devflow.repository.ProjectMemberRepository;
 import com.devflow.repository.ProjectRepository;
@@ -136,6 +137,38 @@ public class ProjectService {
         }
 
         projectRepository.delete(project);
+    }
+
+
+    @Transactional
+    public ProjectResponse.Summary archiveProject(Long id) {
+        User user = getCurrentUser();
+        Project project = projectRepository.findById(id)
+                          .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        if(!project.getOwner().getId().equals(user.getId())) {
+            throw new RuntimeException("Only the owner can archive a project");
+        }
+
+        project.setStatus(ProjectStatus.ARCHIVED);
+
+        return toSummary(projectRepository.save(project));
+    }
+
+    @Transactional
+    public ProjectResponse.Summary completeProject(Long id) {
+        User user = getCurrentUser();
+
+        Project project = projectRepository.findById(id).
+                          orElseThrow(() -> new RuntimeException("Project not found"));
+
+        if(!project.getOwner().getId().equals(user.getId())) {
+            throw new RuntimeException("Only the owner can complete a project");
+        }
+
+        project.setStatus(ProjectStatus.COMPLETED);
+
+        return toSummary(projectRepository.save(project));
     }
 
     // ----- MAPPER -----

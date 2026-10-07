@@ -238,8 +238,8 @@ public class TaskService {
 
     // ----- MAPPER -----
 
-    private TaskResponse.Summary toSummary(Task t) {
-        return new TaskResponse.Summary(
+    public TaskResponse.Summary toSummaryPublic(Task t) {
+    return new TaskResponse.Summary(
             t.getId(),
             t.getProject().getId(),
             t.getTitle(),
@@ -250,15 +250,20 @@ public class TaskService {
             t.getAssignee() != null ? t.getAssignee().getId() : null,
             t.getDueDate(),
             t.getPrUrl(),
-            t.getLabels().stream().
-            map(l -> new LabelResponse.Summary(
-                l.getId(),
-                l.getProject().getId(),
-                l.getName(),
-                l.getColor()
-            )).toList(),
+            t.getLabels().stream()
+                    .map(l -> new LabelResponse.Summary(
+                            l.getId(),
+                            l.getProject().getId(),
+                            l.getName(),
+                            l.getColor()))
+                    .toList(),
             t.getCreatedAt(),
             t.getUpdatedAt()
-        );
-    }
+    );
+}
+
+private TaskResponse.Summary toSummary(Task t) {
+    return toSummaryPublic(t);
+}
+
 }

@@ -1,37 +1,36 @@
 package com.devflow.controller;
 
-import com.devflow.entity.User;
-import com.devflow.repository.UserRepository;
+import com.devflow.dto.UserProfileRequest;
+import com.devflow.dto.UserProfileResponse;
+import com.devflow.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/users")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "bearerAuth")
 public class UserController {
-    private final UserRepository userRepository;
+
+    private final UserService userService;
 
     @GetMapping("/me")
-    public ResponseEntity<Map<String, Object>> getCurrentUser() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<UserProfileResponse.Profile> getMyProfile() {
+        return ResponseEntity.ok(userService.getMyProfile());
+    }
 
-        return ResponseEntity.ok(
-                Map.of(
-                "id", user.getId(),
-                "name", user.getName(),
-                "email", user.getEmail(),
-                "role", user.getRole()
-                
-        ));
+    @PatchMapping("/me")
+    public ResponseEntity<UserProfileResponse.Profile> updateMyProfile(
+            @Valid @RequestBody UserProfileRequest.Update request) {
+        return ResponseEntity.ok(userService.updateMyProfile(request));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserProfileResponse.Profile> getUserById(
+            @PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 }

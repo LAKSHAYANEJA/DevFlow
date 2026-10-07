@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import Navbar from "../components/Navbar";
 import toast from "react-hot-toast";
+import { usePageTitle } from "../hooks/usePageTitle";
+
  
 const STATUSES = ['TODO', 'IN_PROGRESS', 'IN_REVIEW', 'DONE'];
  
@@ -21,6 +23,7 @@ const PRIORITY_CONFIG = {
 };
  
 export default function Board() {
+    usePageTitle(project?.name || 'Board');
     const { id } = useParams();
     const navigate = useNavigate();
     const [project, setProject] = useState(null);

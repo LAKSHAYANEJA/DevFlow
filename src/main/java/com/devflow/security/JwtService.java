@@ -6,9 +6,11 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+// import com.devflow.;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.UUID;
 import java.util.function.Function;
 
 @Service
@@ -34,14 +36,15 @@ public class JwtService {
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
-        return Jwts.builder().
-        subject(userDetails.getUsername()).
-        claim("type", "refresh").
-        issuedAt(new Date()).
-        expiration(new Date(System.currentTimeMillis() + refreshTokenExpiryMs)).
-        signWith(getSigningKey()).
-        compact();
-    }
+    return Jwts.builder()
+            .subject(userDetails.getUsername())
+            .claim("type", "refresh")
+            .id(UUID.randomUUID().toString())
+            .issuedAt(new Date())
+            .expiration(new Date(System.currentTimeMillis() + refreshTokenExpiryMs))
+            .signWith(getSigningKey())
+            .compact();
+}
 
     // ----- VALIDATE TOKEN -----
 
@@ -81,5 +84,9 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
+    public long getAccessTokenExpiry() {
+        return accessTokenExpiryMs;
+}
 
 }

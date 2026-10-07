@@ -2,8 +2,11 @@ import { useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import { usePageTitle } from '../hooks/usePageTitle';
+
 
 export default function Login() {
+    usePageTitle('Sign in');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);

@@ -3,8 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import Navbar from "../components/Navbar";
 import toast from "react-hot-toast";
+import { usePageTitle } from "../hooks/usePageTitle";
+
 
 export default function Projects() {
+  usePageTitle('Projects');
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);

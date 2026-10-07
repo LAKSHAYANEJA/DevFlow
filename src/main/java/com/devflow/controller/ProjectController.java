@@ -48,4 +48,14 @@ public class ProjectController {
             projectService.deleteProject(id);
             return ResponseEntity.noContent().build();
         }
+
+        @PatchMapping("/{id}/archive")
+        public ResponseEntity<ProjectResponse.Summary> archive(@PathVariable Long id) {
+            return ResponseEntity.ok(projectService.archiveProject(id));
+        }
+
+        @PatchMapping("/{id}/complete")
+        public ResponseEntity<ProjectResponse.Summary> complete(@PathVariable Long id) {
+            return ResponseEntity.ok(projectService.completeProject(id));
+        }
 }
