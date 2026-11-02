@@ -21,20 +21,34 @@ export default function Members(){
         fetchAll();
     }, [id]);
 
-    const fetchAll = async () => {
+        const fetchAll = async () => {
         try{
             const [projectRes, memberRes] = await Promise.all([
-                api.get(`/pi/v1/projects/${id}`),
-                api.get(`/pi/v1/projects/${id}/members`),
+                api.get(`/api/v1/projects/${id}`),
+                api.get(`/api/v1/projects/${id}/members`),
             ]);
+            setProject(projectRes.data);    // ✅ ADD THIS
+            setMembers(memberRes.data);    // ✅ ADD THIS
         }
-            catch{
-                toast.error('Failed to load members');
-            }
-            finally{
-                setLoading(false);
-            }
-        
+        catch{
+            toast.error('Failed to load members');
+        }
+        finally{
+            setLoading(false);
+        }
+    };
+
+    const removeMember = async (userId, name) => { // ✅ Change to (userId, name)
+        if(!confirm(`Remove ${name} from this project?`)) return ;
+
+        try{
+            await api.delete(`/api/v1/projects/${id}/members/${userId}`);
+            setMembers(prev => prev.filter(m => m.userId !== userId));
+            toast.success('Member removed');
+        }
+        catch{
+            toast.error('Failed to remove member');
+        }
     };
 
     const inviteMember = async (e) => {
@@ -51,19 +65,6 @@ export default function Members(){
         }
         finally{
             setInviting(false);
-        }
-    };
-
-    const removeMember = async (useRevalidator, name) => {
-        if(!confirm(`Remove ${name} from this project?`)) return ;
-
-        try{
-            await api.delete(`/api/v1/projects/${id}/members/${userId}`);
-            setMembers(prev => prev.filter(m => m.userId !== userId));
-            toast.success('Member removed');
-        }
-        catch{
-            toast.error('Failed to remove member');
         }
     };
 

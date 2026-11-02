@@ -23,12 +23,12 @@ const PRIORITY_CONFIG = {
 };
  
 export default function Board() {
-    usePageTitle(project?.name || 'Board');
     const { id } = useParams();
     const navigate = useNavigate();
     const [project, setProject] = useState(null);
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
+    usePageTitle(project?.name || 'Board');
     const [selectedTask, setSelectedTask] = useState(null);
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [createStatus, setCreateStatus] = useState('TODO');
